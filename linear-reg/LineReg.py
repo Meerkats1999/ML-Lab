@@ -1,58 +1,34 @@
-import numpy as np
 import pandas as pd
-import matplotlib.pyplot as plt 
+import numpy as np
+import matplotlib.pyplot as plt
+
+header_list = ["X","Y"]
+df = pd.read_csv("Food-Truck-LineReg.csv", names=header_list)
+df.head()
+
+class LinearRegression():
+  def __init__(self, df):
+    self.x = np.array(df["X"])
+    self.y = np.array(df["Y"])
+    self.n = np.size(self.x)
+
+  def train(self):
+    mean_x = np.mean(self.x) 
+    mean_y = np.mean(self.y)
+    SS_xy = np.sum(self.y*self.x) - self.n*mean_y*mean_x 
+    SS_xx = np.sum(self.x*self.x) - self.n*mean_x*mean_x 
+    b1 = SS_xy / SS_xx 
+    b0 = mean_y - b1*mean_x
+    print("b1: "+str(b1)+" b0: "+str(b0))
+    self.y_pred = b0 + b1*self.x
   
-def estimate_coef(x, y): 
-    # number of observations/points 
-    n = np.size(x) 
-  
-    # mean of x and y vector 
-    m_x, m_y = np.mean(x), np.mean(y) 
-  
-    # calculating cross-deviation and deviation about x 
-    SS_xy = np.sum(y*x) - n*m_y*m_x 
-    SS_xx = np.sum(x*x) - n*m_x*m_x 
-  
-    # calculating regression coefficients 
-    b_1 = SS_xy / SS_xx 
-    b_0 = m_y - b_1*m_x 
-  
-    return(b_0, b_1) 
-  
-def plot_regression_line(x, y, b): 
-    # plotting the actual points as scatter plot 
-    plt.scatter(x, y, color = "m", 
-               marker = "o", s = 30) 
-  
-    # predicted response vector 
-    y_pred = b[0] + b[1]*x 
-  
-    # plotting the regression line 
-    plt.plot(x, y_pred, color = "g") 
-  
-    # putting labels 
+  def plot_line(self):
+    plt.scatter(self.x, self.y, color = "g",s = 30) 
+    plt.plot(self.x, self.y_pred, color = "r") 
     plt.xlabel('x') 
     plt.ylabel('y') 
-  
-    # function to show plot 
-    plt.show() 
-  
-def main(): 
-    # observations
-    dataset = pd.read_csv('Food-Truck-LineReg.csv')
-
-    x = dataset.iloc[:97,0]
-    x = np.array(x)
-    y = dataset.iloc[:97,1]
-    y=np.array(y)
-     
-  
-    # estimating coefficients 
-    b = estimate_coef(x, y) 
-    print("Estimated coefficients: b_0 = {} b_1 = {}".format(b[0], b[1])) 
-  
-    # plotting regression line 
-    plot_regression_line(x, y, b) 
-  
-if __name__ == "__main__": 
-    main() 
+    plt.show()
+    
+model = LinearRegression(df)
+model.train()
+model.plot_line()

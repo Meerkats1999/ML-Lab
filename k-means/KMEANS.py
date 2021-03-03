@@ -9,7 +9,7 @@ def euclidean(a,b, ax=1):
 
 def main():
     k = 3
-    X = pd.read_csv('kmeans.csv',index_col=False)
+    X = pd.read_csv("kmeans.csv",index_col=False)
     print(X)
 
     x1 = X['X1'].values
