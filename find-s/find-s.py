@@ -11,6 +11,7 @@ import numpy as np
 class findS():
     def __init__(self, data, data_test):
         self.trainingData = data.iloc[:, data.columns != data.columns[-1]]
+        print(self.trainingData)
         self.targetData = data.iloc[:,-1:]
         self.hypothesis = self.trainingData.iloc[0]
         self.testingData = data_test
